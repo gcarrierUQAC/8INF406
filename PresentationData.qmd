@@ -1,0 +1,134 @@
+---
+title: "8INF416 – Proposition de Projet"
+author: "Guillaume Carrier, Nicolas Cinq-Mars"
+format:
+  revealjs:
+    theme: serif
+    lang: fr
+    transition: fade
+    slide-number: true
+    incremental: true
+    scrollable: true
+editor: visual
+---
+
+## Présentation de l'équipe
+
+Guillaume Carrier
+
+Développeur Système
+
+Étudiant 3e cycle Certificat en Science des données
+
+
+
+Nicolas Cinq-Mars
+
+
+
+
+## Choix des données
+
+ToDo : Nicolas
+
+## Objectifs
+
+-   Identifier les marchés énergétiques dominants(Chine, USA, ... )
+
+-   Visualiser où se trouvent les centrales pour analyser l’accès au réseau
+
+-   Mesurer le mix énergétique mondiale (renouvelable vs fossil,...)
+
+-   Évaluer l'âge des centrales électriques des pays/région ....
+
+## Graphiques envisagés
+
+-   `bar plot` avec filtre selon les pays, les régions , les années, capacité avec animation : https://plotly.com/r/bar-charts/
+
+-   `carte interactive` avec filtre et différents icone des types d'énergie : https://plotly.com/r/#maps
+
+-   `bubble chart` : https://plotly.com/r/bubble-charts/
+
+-   Animation cumulative avec les années des changements de type d'énergie : https://plotly.com/r/cumulative-animations/
+
+-  ToDO : Trouver une 5e visualisation
+
+## Jeu de données
+
+```{r Librairies, echo=FALSE, message=FALSE, hide=TRUE}
+librairies <- c(
+  "ggplot2", "DataExplorer", "DBI", "odbc", "glue", "dplyr", "leaflet",
+  "lubridate", "tidyr", "purrr", "plotly", "RPostgres", "leaflet.extras", 
+  "htmltools",  "tidyverse", "ggalluvial", "forecast", "tsibble", "fable", 
+  "feasts","broom","scales",  "DiagrammeR","crosstalk", "osrm","purrr","readr","summarytools",
+ "janitor","lubridate","naniar","visdat")
+
+for (pkg in librairies) {
+  if (!require(pkg, character.only = TRUE)) {
+    install.packages(pkg)
+    library(pkg, character.only = TRUE)
+  }
+}
+```
+
+```{r LoadData, echo=FALSE, message=FALSE, hide=TRUE}
+df <- read_csv("data/global_power_plant_database.csv", show_col_types = FALSE)
+introduce(df)
+```
+
+```{r NettoyerData, echo=FALSE, message=FALSE, hide=TRUE}
+df <- df %>% clean_names() %>%
+  select(name, country, country_long, capacity_mw,
+         latitude, longitude, primary_fuel, commissioning_year) %>%
+  mutate(
+    commissioning_year = if_else(
+      commissioning_year < 1900 | commissioning_year > lubridate::year(Sys.Date()),
+      NA_real_, commissioning_year
+    ),
+    plant_age = lubridate::year(Sys.Date()) - commissioning_year,
+    primary_fuel = str_trim(primary_fuel) %>% str_to_title()
+  ) %>% drop_na(capacity_mw, commissioning_year, latitude, longitude, primary_fuel)
+
+# Mappons les données
+fuel_map <- c(
+  "Coal"   = "Fossil",
+  "Gas"    = "Fossil",
+  "Oil"    = "Fossil",
+  "Peat"   = "Fossil",
+  "Nuclear"= "Nuclear",
+  "Hydro"  = "Renewable",
+  "Solar"  = "Renewable",
+  "Wind"   = "Renewable",
+  "Biomass"= "Renewable",
+  "Waste"  = "Other",
+  "Geothermal" = "Other"
+)
+
+df <- df %>%
+  mutate(fuel_group = recode(primary_fuel, !!!fuel_map, .default = "Other"))
+```
+
+```{r, echo=FALSE, message=FALSE, hide=TRUE}
+# Utilisons la puissance de DataExplorer
+create_report(df)
+```
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE, hide=TRUE}
+dfSummary(df)
+```
+
+## Exemple Visualisation
+
+
+```{r Esquisse_MAP}
+plot_geo(df, lat = ~latitude, lon = ~longitude) %>%
+  add_markers(
+    text = ~paste(name, "<br>", country_long, "<br>", primary_fuel),
+    color = ~primary_fuel,
+    colors = "Set1",
+    alpha = 0.5,
+    marker = list(size = 4)
+  ) %>%
+  layout(title = "Carte interactive des centrales électriques")
+
+```
