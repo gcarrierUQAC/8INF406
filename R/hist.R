@@ -12,6 +12,10 @@ library(readr)
 library(stringr)
 library(lazyeval)
 
+source("R/ETL.R")
+
+df <- etl_powerplants("data/global_power_plant_database.csv")
+
 couleurs_marker <- c(
   "Hydro"  = "#00fa25", "Gas" = "#B8860B", "Oil" = "#B8860B", "Other" = "#FF69B4", 
   "Nuclear" = "#d6d318", "Coal" = "#A52A2A", "Wind" = "#00fa25", "Biomass" = "#B8860B", 
@@ -52,23 +56,16 @@ animated_bar <- function(data) {
     )
 }
 
-source("R/ETL.R")
-# Test de la fonction animated_bar
-df <- etl_powerplants("data/global_power_plant_database.csv")
-# Grouper les données par pays et type d'énergie, en sommans toutes les années précédantes à chaque année
-# si aucune année copier la précédante
+# Grouper les données par pays et type d'énergie
 df_agg <- df %>%
   filter(!is.na(commissioning_year)) %>%
   mutate(commissioning_year = as.integer(commissioning_year)) %>%
   group_by(country, primary_fuel, commissioning_year) %>%
   summarise(capacity_mw = sum(capacity_mw, na.rm = TRUE), .groups = 'drop') %>%
-  
-  # Étendre à toutes les années possibles par groupe
   complete(
     country, primary_fuel, commissioning_year = full_seq(commissioning_year, 1),
     fill = list(capacity_mw = 0)
   ) %>%
-  
   arrange(country, primary_fuel, commissioning_year) %>%
   group_by(country, primary_fuel) %>%
   mutate(capacity_mw = cumsum(capacity_mw)) %>%
