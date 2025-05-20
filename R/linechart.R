@@ -7,14 +7,12 @@ df <- etl_powerplants("data/global_power_plant_database.csv")
 
 selected_country <- "United States of America"
 
-# Step 1: Aggregate and complete missing years/fuels for full line traces
 df_agg <- df %>%
   filter(!is.na(commissioning_year)) %>%
   filter(country_long == selected_country) %>%
   group_by(primary_fuel, commissioning_year) %>%
   summarise(total_capacity_mw = sum(capacity_mw, na.rm = TRUE), .groups = 'drop')
 
-# Complete to ensure every primary_fuel has all years in the range
 all_years <- seq(min(df_agg$commissioning_year), max(df_agg$commissioning_year))
 all_fuels <- unique(df_agg$primary_fuel)
 df_complete <- expand_grid(primary_fuel = all_fuels, commissioning_year = all_years) %>%
@@ -25,13 +23,11 @@ df_complete <- expand_grid(primary_fuel = all_fuels, commissioning_year = all_ye
   mutate(cum_capacity_mw = cumsum(total_capacity_mw)) %>%
   ungroup()
 
-# Step 2: Get last points for annotation
 last_points <- df_complete %>%
   group_by(primary_fuel) %>%
   filter(commissioning_year == max(commissioning_year)) %>%
   ungroup()
 
-# Step 3: Animated cumulative line plot with persistent traces and labels
 fig <- plot_ly(
   df_complete,
   x = ~commissioning_year,
