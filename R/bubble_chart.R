@@ -1,6 +1,3 @@
-# bubble_chart.R
-library(plotly)
-
 g <- list(
   scope      = "world",
   projection = list(type = "mercator"),

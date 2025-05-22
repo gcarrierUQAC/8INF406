@@ -5,7 +5,6 @@ source("global.R")
 source("R/bubble_chart.R")
 source("R/heatmap.R")
 source("R/hist.R")
-source("R/linechart.R")
 
 ##########################################################
               # ------------ UI --------- #
@@ -16,8 +15,9 @@ ui <- fluidPage(
     tabsetPanel(
       tabPanel("Emplacement Énergitique", plotlyOutput("bubbleMap")),
       tabPanel("Histogramme Animé",
-               selectInput("country_choice", "Choisir un pays :", choices = sort(unique(df$country_long)),selected = "China"),
-               plotlyOutput("histPlot")),
+               selectInput("country_choice", "Choisir un pays :", choices = sort(unique(df$country_long)),selected = "Canada"),
+               plotlyOutput("histPlot")
+               ),
       tabPanel("Source Énergitique Par Pays",
                selectInput("choropleth_fuel","Type d'énergie :", choices = c("Tous", sort(unique(df$primary_fuel))), selected = "Tous"),
                plotlyOutput("choroplethPlot"))

@@ -3,6 +3,7 @@ library(dplyr)
 library(janitor)
 library(lubridate)
 library(stringr)
+library(tidyr)
 
 etl_powerplants <- function(path = "global_power_plant_database.csv", col_drop_na = "capacity_mw") {
   df <- read_csv(path, show_col_types = FALSE) %>%
