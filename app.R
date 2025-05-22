@@ -1,65 +1,59 @@
-# =====================================================================
-# app.R
-# =====================================================================
 library(shiny)
 library(plotly)
-library(dplyr)
-library(here)
-library(ggplot2)
-library(gganimate)
-library(purrr)
-library(tidyr)
-library(janitor)
-library(readr)
-library(stringr)
-library(lazyeval)
 
-# ---- Fichiers externes (packages, données, fonctions, modules) -------
-source("global.R")            # charge df     et df_map
-source("R/bubble_chart.R")    # -> bubble_map()
-source("R/utils.R")
-source("R/mod_bubble.R")      
+source("global.R")
+source("R/bubble_chart.R")
+source("R/heatmap.R")
+source("R/hist.R")
+source("R/linechart.R")
 
-# ------------------------------- UI ----------------------------------
+##########################################################
+              # ------------ UI --------- #
+##########################################################
 ui <- fluidPage(
-  titlePanel("Centrales électriques – 2 jeux de données"),
-  
-  tabsetPanel(
-    # ------- Onglet 1 : carte long/lat --------------------------------
-    tabPanel(
-      "Carte",
-      plotly::plotlyOutput("map_plot", height = 650)
-    ),
-    
-    # ------- Onglet 2 : animation cumulative --------------------------
-    tabPanel(
-      "Capacité cumulative",
-      mod_bubble_ui("cum_bubble")
-    )
+  titlePanel("Consommation Énergétique Mondiale"),
+  mainPanel(
+    tabsetPanel(
+      tabPanel("Emplacement Énergitique", plotlyOutput("bubbleMap")),
+      tabPanel("Histogramme Animé",
+               selectInput("country_choice", "Choisir un pays :", choices = sort(unique(df$country_long)),selected = "China"),
+               plotlyOutput("histPlot")),
+      tabPanel("Source Énergitique Par Pays",
+               selectInput("choropleth_fuel","Type d'énergie :", choices = c("Tous", sort(unique(df$primary_fuel))), selected = "Tous"),
+               plotlyOutput("choroplethPlot"))
+   )
   )
 )
-
-# ----------------------------- SERVER --------------------------------
-server <- function(input, output, session) {
-  
-  # ---- Carte interactive (df_map) ----
-  output$map_plot <- plotly::renderPlotly({
-    bubble_map(
-      data   = df_map,
-      x      = "longitude",
-      y      = "latitude",
-      size   = "capacity_mw",
-      color  = "primary_fuel",
-      symbol = "primary_fuel"
-    )
+##########################################################
+              # --------- SERVER -------- #
+##########################################################
+server <- function(input, output) {
+  data_bubble <- reactive({
+    df
   })
   
-  # ---- Animation cumulative (df) ----
-  mod_bubble_server(
-    id      = "cum_bubble",
-    data_r  = df_time
-  )
+  data_hist <- reactive({
+    req(input$country_choice)
+    df %>% filter(country_long == input$country_choice)
+  })
+  
+  output$bubbleMap <- renderPlotly({
+    bubble_map(data_bubble())
+  })
+  
+  output$histPlot <- renderPlotly({
+    plot_histogram(data_hist())
+  })
+  
+
+  output$choroplethPlot <- renderPlotly({
+    country_ref <- df_country %>% select(country_long, iso3) %>% distinct()
+    fuel <- if ("Tous" %in% input$choropleth_fuel) unique(df_country$primary_fuel) else input$choropleth_fuel
+    d <- pad_countries(df_country, country_ref, fuel)
+    plot_choropleth(d)
+    
+  })
+  
 }
 
-# ---------------------------- LANCEMENT ------------------------------
-shinyApp(ui, server)
+shinyApp(ui = ui, server = server)
