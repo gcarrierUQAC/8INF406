@@ -9,20 +9,23 @@ global_energy_production_animated_bar <- function(data) {
   plot_ly(
     data = data,
     x = ~primary_fuel,
-    y = ~total_sum,
+    y = ~cumulative_capacity,
     frame = ~commissioning_year,
     type = 'bar',
     color = ~primary_fuel,
-    colors = couleurs_marker
+    colors = couleurs_marker,
+    height = 800
   ) %>%
     layout(title = "Évolution de la capacité d'énergie installée mondialement par type d'énergie", 
            xaxis = list(title = "Type d'énergie"),
            yaxis = list(title = "Capacité d'énergie installée (MW)")
     ) %>%
     animation_opts(
-      frame = 400,
+      frame = 200,
       transition = 0,      
       redraw = FALSE,
       mode = "immediate"
+    ) %>% animation_slider(
+      currentvalue = list(prefix = "Année ")
     )
 }
