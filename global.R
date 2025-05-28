@@ -86,4 +86,15 @@ pad_countries <- function(df_country, country_ref, fuel = NULL) {
 
 
 #########################################################################
+# Pour les données du bar graph global_energy_production.R
+energy_production_per_fuel_type <- df %>%
+  filter(!is.na(commissioning_year)) %>%
+  mutate(commissioning_year = as.integer(commissioning_year)) %>%
+  group_by(commissioning_year, primary_fuel) %>%
+  summarise(total_sum = sum(capacity_mw, na.rm = TRUE), .groups = "drop")
 
+energy_production_per_fuel_type <- energy_production_per_fuel_type %>%
+  complete(commissioning_year = unique(energy_production_per_fuel_type$commissioning_year),
+           primary_fuel = unique(energy_production_per_fuel_type$primary_fuel),
+           fill = list(total_sum = 0))
+#########################################################################

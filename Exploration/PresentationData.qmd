@@ -20,12 +20,9 @@ Développeur Système
 
 Étudiant 3e cycle Certificat en Science des données
 
-
-
 Nicolas Cinq-Mars
 
-
-
+Étudiant BAC en Informatique
 
 ## Choix des données
 
@@ -51,7 +48,7 @@ ToDo : Nicolas
 
 -   Animation cumulative avec les années des changements de type d'énergie : https://plotly.com/r/cumulative-animations/
 
--  ToDO : Trouver une 5e visualisation
+-   ToDO : Trouver une 5e visualisation
 
 ## Jeu de données
 
@@ -118,7 +115,6 @@ dfSummary(df)
 ```
 
 ## Exemple Visualisation
-
 
 ```{r Esquisse_MAP}
 plot_geo(df, lat = ~latitude, lon = ~longitude) %>%

@@ -5,6 +5,7 @@ source("global.R")
 source("R/bubble_chart.R")
 source("R/heatmap.R")
 source("R/hist.R")
+source("R/global_energy_capacity.R")
 
 ##########################################################
               # ------------ UI --------- #
@@ -20,7 +21,9 @@ ui <- fluidPage(
                ),
       tabPanel("Source Énergitique Par Pays",
                selectInput("choropleth_fuel","Type d'énergie :", choices = c("Tous", sort(unique(df$primary_fuel))), selected = "Tous"),
-               plotlyOutput("choroplethPlot"))
+               plotlyOutput("choroplethPlot")),
+      tabPanel("Évolution des sources énergitique mondiale", plotlyOutput("globalEnergyCapacity")),
+      tabPanel("Graphique #5")
    )
   )
 )
@@ -54,6 +57,9 @@ server <- function(input, output) {
     
   })
   
+  output$globalEnergyCapacity <- renderPlotly({
+    global_energy_production_animated_bar(energy_production_per_fuel_type)
+  })
 }
 
 shinyApp(ui = ui, server = server)
