@@ -3002,17 +3002,8 @@
     "global.R": {
       "checksum": "391cfb7292831014879a1a335d58bcd0"
     },
-    "www/box_plot_module.R": {
-      "checksum": "d349f7e6fbe938f2d63d2916a4033810"
-    },
-    "www/bubble_chart.R": {
-      "checksum": "d41d8cd98f00b204e9800998ecf8427e"
-    },
     "www/bubble_map.R": {
       "checksum": "42e45abee87fbba8eec813c381041a9a"
-    },
-    "www/bubble_map1.R": {
-      "checksum": "ef260ab15ec86a512b7bb5043a504658"
     },
     "www/ETL.R": {
       "checksum": "08def6b2d48ada2e0d9c0d306db29df5"
