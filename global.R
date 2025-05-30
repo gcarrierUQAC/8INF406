@@ -17,7 +17,6 @@ library(lubridate)
 
 ################################################################################
 # Charger les fonctions et modules
-source("www/bubble_chart.R")     
 source("www/heatmap.R")      
 source("www/hist.R")         
 source("www/bubble_map.R")
