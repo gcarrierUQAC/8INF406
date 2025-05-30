@@ -10,7 +10,7 @@ source("global.R")
 # ------------ UI --------- #
 ##########################################################
 ui <- navbarPage(
-  title = "Consommation Énergétique Mondiale",
+  title = enc2utf8("Consommation Énergétique Mondiale"),
   input_dark_mode(id = "mode"), 
   theme = bs_theme(version = 5, bootswatch = "flatly", 
                    base_font = font_google("Roboto")),
