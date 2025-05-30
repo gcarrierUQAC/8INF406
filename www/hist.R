@@ -9,7 +9,7 @@ animated_bar <- function(data) {
   plot_ly(
     data,
     x = ~capacity_mw,
-    y = ~reorder(country, capacity_mw),
+    y = ~reorder(country_long, capacity_mw),
     color = ~primary_fuel,
     colors = couleurs_marker,
     frame = ~frame,
