@@ -6,7 +6,7 @@ library(stringr)
 library(tidyr)
 
 etl_powerplants <- function(path = "global_power_plant_database.csv", col_drop_na = "capacity_mw") {
-  df <- read_csv(path, show_col_types = FALSE,locale(encoding = "UTF-8"))) %>%
+  df <- read_csv(path, show_col_types = FALSE,encoding = "UTF-8")) %>%
     clean_names() %>%
     select(name, country, country_long, capacity_mw, latitude, longitude, primary_fuel, commissioning_year) %>%
     mutate(
