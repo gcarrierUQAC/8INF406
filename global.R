@@ -12,16 +12,27 @@ library(stringr)
 library(lazyeval)
 library(countrycode)
 
-source(here("R/ETL.R"), local = TRUE)
+################################################################################
+source(here("global.R"))             
+source(here("bubble_chart.R"))     
+source(here("heatmap.R"))          
+source(here("hist.R"))           
+source(here("bubble_map1.R"))
+source(here("box_plot_module.R"))  
+source(here("ETL.R"), local = TRUE)
 
 # Load Standard des données
-df <- etl_powerplants("data/global_power_plant_database.csv")
+df <- etl_powerplants("global_power_plant_database.csv")
 
 #########################################################################
 # Fonction pour créer un graphique à barres animé
 prepare_data_for_bar <- function(df) {
+  df <- df %>% filter(!is.na(commissioning_year))
+  if (nrow(df) == 0) return(tibble())
+  years <- unique(df$commissioning_year)
+  if (length(years) == 0 || all(is.na(years))) return(tibble())
+  
   df %>%
-    filter(!is.na(commissioning_year)) %>%
     mutate(commissioning_year = as.integer(commissioning_year)) %>%
     group_by(country, primary_fuel, commissioning_year) %>%
     summarise(capacity_mw = sum(capacity_mw, na.rm = TRUE), .groups = 'drop') %>%
@@ -36,6 +47,7 @@ prepare_data_for_bar <- function(df) {
     mutate(total_capacity = sum(capacity_mw)) %>%
     ungroup()
 }
+
 
 # Si on veut grouper pour les top 10
 plot_histogram <- function(df) {
@@ -86,18 +98,23 @@ pad_countries <- function(df_country, country_ref, fuel = NULL) {
 
 
 #########################################################################
-# Pour les données du bar graph global_energy_production.R
-energy_production_per_fuel_type <- df %>%
-  filter(!is.na(commissioning_year)) %>%
-  mutate(commissioning_year = as.integer(commissioning_year)) %>%
-  group_by(commissioning_year, primary_fuel) %>%
-  summarise(year_total_capacity = sum(capacity_mw, na.rm = TRUE), .groups = "drop")
 
-energy_production_per_fuel_type <- energy_production_per_fuel_type %>%
-  complete(commissioning_year = unique(energy_production_per_fuel_type$commissioning_year),
-           primary_fuel = unique(energy_production_per_fuel_type$primary_fuel),
-           fill = list(year_total_capacity = 0)) %>%
-  group_by(primary_fuel) %>%
-  mutate(cumulative_capacity = cumsum(year_total_capacity)) %>%
-  ungroup()
+summary_by_fuel <- function(df, year_max) {
+  df %>%
+    filter(!is.na(commissioning_year), commissioning_year <= year_max) %>%
+    group_by(primary_fuel) %>%
+    summarise(`Capacité Totale (MW)` = sum(capacity_mw, na.rm = TRUE)) %>%
+    arrange(desc(`Capacité Totale (MW)`))
+}
+#########################################################################
+
+# Preprocess data: clean and prepare for animation
+df_clean <- df %>%
+  filter(!is.na(commissioning_year), !is.na(capacity_mw)) %>%
+  mutate(
+    commissioning_year = as.integer(commissioning_year),
+    primary_fuel = str_to_title(str_trim(primary_fuel)),
+    plant_age = lubridate::year(Sys.Date()) - commissioning_year
+  ) %>%
+  filter(commissioning_year >= 1950)
 #########################################################################

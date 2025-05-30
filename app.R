@@ -1,14 +1,9 @@
+#### Optimiser les filtrations dans les réactives
 library(shiny)
 library(plotly)
 
-source("global.R")
-source("R/bubble_chart.R")
-source("R/heatmap.R")
-source("R/hist.R")
-source("R/global_energy_capacity.R")
-
 ##########################################################
-              # ------------ UI --------- #
+# ------------ UI --------- #
 ##########################################################
 ui <- fluidPage(
   titlePanel("Consommation Énergétique Mondiale"),
@@ -18,17 +13,16 @@ ui <- fluidPage(
       tabPanel("Histogramme Animé",
                selectInput("country_choice", "Choisir un pays :", choices = sort(unique(df$country_long)),selected = "Canada"),
                plotlyOutput("histPlot")
-               ),
+      ),
       tabPanel("Source Énergitique Par Pays",
                selectInput("choropleth_fuel","Type d'énergie :", choices = c("Tous", sort(unique(df$primary_fuel))), selected = "Tous"),
                plotlyOutput("choroplethPlot")),
       tabPanel("Évolution des sources énergitique mondiale", plotlyOutput("globalEnergyCapacity")),
-      tabPanel("Graphique #5")
-   )
+    )
   )
 )
 ##########################################################
-              # --------- SERVER -------- #
+# --------- SERVER -------- #
 ##########################################################
 server <- function(input, output) {
   data_bubble <- reactive({
@@ -48,7 +42,7 @@ server <- function(input, output) {
     plot_histogram(data_hist())
   })
   
-
+  
   output$choroplethPlot <- renderPlotly({
     country_ref <- df_country %>% select(country_long, iso3) %>% distinct()
     fuel <- if ("Tous" %in% input$choropleth_fuel) unique(df_country$primary_fuel) else input$choropleth_fuel
