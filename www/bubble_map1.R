@@ -7,7 +7,7 @@ generate_bubble_map <- function(data, year) {
       primary_fuel = str_to_title(str_trim(primary_fuel)),
       plant_age = year(Sys.Date()) - commissioning_year
     ) %>%
-    filter(commissioning_year >= 1950, commissioning_year <= year)
+    filter(commissioning_year >= 1900, commissioning_year <= year)
   
   bubble_map(
     data   = df_clean,
