@@ -15,13 +15,13 @@ animated_bar <- function(data) {
     frame = ~frame,
     type = 'bar',
     orientation = 'h',
-    text = ~paste("Énergie:", primary_fuel, "<br>MW:", round(capacity_mw)),
+    text = ~paste(enc2utf8("Énergie:"), enc2utf8(primary_fuel), "<br>MW:", round(capacity_mw)),
     hoverinfo = "text",
     height = 800
   ) %>%
     layout(
-      title = "Évolution de la capacité installée par pays et type d'énergie",
-      xaxis = list(title = "Capacité installée (MW)"),
+      title = enc2utf8("Évolution de la capacité installée par pays et type d'énergie"),
+      xaxis = list(title = enc2utf8("Capacité installée (MW)")),
       yaxis = list(title = "Pays"),
       barmode = 'group'
     ) %>%
