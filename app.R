@@ -2,7 +2,7 @@ library(shiny)
 library(plotly)
 library(bslib)
 
-Sys.setlocale("LC_ALL", "en_US.UTF-8")
+Sys.setlocale("LC_ALL", "fr_CA.UTF-8")
 
 source("global.R")
 
