@@ -1,3 +1,4 @@
+# -*- coding: UTF-8 -*-
 couleurs_marker <- c(
   "Hydro"  = "#00fa25", "Gas" = "#B8860B", "Oil" = "#B8860B", "Other" = "#FF69B4", 
   "Nuclear" = "#d6d318", "Coal" = "#A52A2A", "Wind" = "#00fa25", "Biomass" = "#B8860B", 
