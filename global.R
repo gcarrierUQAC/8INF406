@@ -20,7 +20,6 @@ library(lubridate)
 source("www/heatmap.R")      
 source("www/hist.R")         
 source("www/bubble_map.R")
-source("www/box_plot_module.R")
 source("www/global_energy_capacity.R")
 source("www/ETL.R")
 
@@ -44,12 +43,11 @@ df_clean <- df %>%
     primary_fuel = str_to_title(str_trim(primary_fuel)),
     plant_age = year(Sys.Date()) - commissioning_year
   ) %>%
-  filter(commissioning_year >= 1950)
+  filter(commissioning_year >= 1910)
 
 ################################################################################
 # Fonctions utilitaires
 
-# Préparation de la table pour les barres animées (histogramme par pays, année, fuel)
 prepare_data_for_bar <- function(df) {
   df <- df %>% filter(!is.na(commissioning_year))
   if (nrow(df) == 0) return(tibble())
@@ -60,7 +58,7 @@ prepare_data_for_bar <- function(df) {
     mutate(commissioning_year = as.integer(commissioning_year)) %>%
     group_by(country_long, primary_fuel, commissioning_year) %>%    
     summarise(capacity_mw = sum(capacity_mw, na.rm = TRUE), .groups = 'drop') %>%
-    tidyr::complete(country_long, primary_fuel, commissioning_year = full_seq(commissioning_year, 1), fill = list(capacity_mw = 0)) %>%
+    complete(country_long, primary_fuel, commissioning_year = full_seq(commissioning_year, 1), fill = list(capacity_mw = 0)) %>%
     arrange(country_long, primary_fuel, commissioning_year) %>%
     group_by(country_long, primary_fuel) %>%
     mutate(capacity_mw = cumsum(capacity_mw)) %>%
@@ -77,7 +75,7 @@ prepare_data_for_bar <- function(df) {
 pad_countries <- function(df_country, country_ref, fuel = NULL) {
   if (is.null(fuel)) {
     d <- country_ref %>%
-      dplyr::left_join(
+      left_join(
         df_country %>%
           group_by(country_long, iso3) %>%
           summarise(capacity_mw = sum(capacity_mw, na.rm = TRUE), .groups = 'drop'),
@@ -85,7 +83,7 @@ pad_countries <- function(df_country, country_ref, fuel = NULL) {
       )
   } else {
     d <- country_ref %>%
-      dplyr::left_join(
+      left_join(
         df_country %>%
           filter(primary_fuel %in% fuel) %>%
           group_by(country_long, iso3) %>%
@@ -102,7 +100,7 @@ energy_production_per_fuel_type <- df %>%
   mutate(commissioning_year = as.integer(commissioning_year)) %>%
   group_by(commissioning_year, primary_fuel) %>%
   summarise(year_total_capacity = sum(capacity_mw, na.rm = TRUE), .groups = "drop") %>%
-  tidyr::complete(commissioning_year = unique(.$commissioning_year),
+  complete(commissioning_year = unique(.$commissioning_year),
            primary_fuel = unique(.$primary_fuel),
            fill = list(year_total_capacity = 0)) %>%
   group_by(primary_fuel) %>%
