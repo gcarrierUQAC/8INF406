@@ -50,10 +50,10 @@ bubble_map <- function(
       sizeref = 7.0 * max(data[[size]], na.rm = TRUE) / (100^2),
       line = NULL
     ),
-    text = ~paste("Nom:", name, "<br>Capacité:", capacity_mw, "MW<br>Pays:", country, "<br>Type:", primary_fuel)
+    text = ~paste("Nom:", name, enc2utf8("<br>Capacité:"), capacity_mw, "MW<br>Pays:", country, "<br>Type:", primary_fuel)
   ) %>%
     layout(
-      title = "Cartographie des types d'énergie dans le monde",
+      title = enc2utf8("Cartographie des types d'énergie dans le monde"),
       geo = g,
       showlegend = TRUE,
       legend = list(orientation = "v", xanchor = "r", yanchor = "top"),
