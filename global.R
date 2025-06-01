@@ -1,4 +1,5 @@
 # global.R
+# -*- coding: UTF-8 -*-
 
 # Packages nécessaires
 library(shiny)
