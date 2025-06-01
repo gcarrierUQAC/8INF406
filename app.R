@@ -5,6 +5,8 @@ library(thematic)
 source("global.R")
 
 thematic_shiny(font = "auto")
+Sys.setlocale("LC_ALL", "fr_CA.UTF-8")
+options(encoding = "UTF-8")
 
 ui <- navbarPage(
   title = "Consommation Énergétique Mondiale",
