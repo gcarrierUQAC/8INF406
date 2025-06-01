@@ -2174,6 +2174,31 @@
         "Built": "R 4.4.3; ; 2025-03-28 03:07:03 UTC; windows"
       }
     },
+    "rstudioapi": {
+      "Source": "CRAN",
+      "Repository": "https://cran.rstudio.com",
+      "description": {
+        "Package": "rstudioapi",
+        "Title": "Safely Access the RStudio API",
+        "Description": "Access the RStudio API (if available) and provide informative error\n    messages when it's not.",
+        "Version": "0.17.1",
+        "Authors@R": "c(\n    person(\"Kevin\", \"Ushey\", role = c(\"aut\", \"cre\"), email = \"kevin@rstudio.com\"),\n    person(\"JJ\", \"Allaire\", role = c(\"aut\"), email = \"jj@posit.co\"),\n    person(\"Hadley\", \"Wickham\", role = c(\"aut\"), email = \"hadley@posit.co\"),\n    person(\"Gary\", \"Ritchie\", role = c(\"aut\"), email = \"gary@posit.co\"),\n    person(family = \"RStudio\", role = \"cph\")\n    )",
+        "Maintainer": "Kevin Ushey <kevin@rstudio.com>",
+        "License": "MIT + file LICENSE",
+        "URL": "https://rstudio.github.io/rstudioapi/,\nhttps://github.com/rstudio/rstudioapi",
+        "BugReports": "https://github.com/rstudio/rstudioapi/issues",
+        "RoxygenNote": "7.3.2",
+        "Suggests": "testthat, knitr, rmarkdown, clipr, covr",
+        "VignetteBuilder": "knitr",
+        "Encoding": "UTF-8",
+        "NeedsCompilation": "no",
+        "Packaged": "2024-10-22 20:55:52 UTC; kevin",
+        "Author": "Kevin Ushey [aut, cre],\n  JJ Allaire [aut],\n  Hadley Wickham [aut],\n  Gary Ritchie [aut],\n  RStudio [cph]",
+        "Repository": "CRAN",
+        "Date/Publication": "2024-10-22 22:40:02 UTC",
+        "Built": "R 4.4.3; ; 2025-03-28 01:42:54 UTC; windows"
+      }
+    },
     "s2": {
       "Source": "CRAN",
       "Repository": "https://cran.rstudio.com",
@@ -2467,6 +2492,36 @@
         "Date/Publication": "2024-10-04 09:40:02 UTC",
         "Built": "R 4.4.3; x86_64-w64-mingw32; 2025-03-28 01:42:33 UTC; windows",
         "Archs": "x64"
+      }
+    },
+    "thematic": {
+      "Source": "CRAN",
+      "Repository": "https://cran.rstudio.com",
+      "description": {
+        "Package": "thematic",
+        "Title": "Unified and Automatic 'Theming' of 'ggplot2', 'lattice', and\n'base' R Graphics",
+        "Version": "0.1.6",
+        "Authors@R": "c(\n    person(\"Carson\", \"Sievert\", , \"carson@posit.co\", role = c(\"aut\", \"cre\"),\n           comment = c(ORCID = \"0000-0002-4958-2844\")),\n    person(\"Barret\", \"Schloerke\", , \"barret@posit.co\", role = \"aut\",\n           comment = c(ORCID = \"0000-0001-9986-114X\")),\n    person(\"Joe\", \"Cheng\", , \"joe@posit.co\", role = \"aut\"),\n    person(\"Posit Software, PBC\", role = c(\"cph\", \"fnd\"))\n  )",
+        "Description": "Theme 'ggplot2', 'lattice', and 'base' graphics based on a\n    few choices, including foreground color, background color, accent\n    color, and font family. Fonts that aren't available on the system, but\n    are available via download on 'Google Fonts', can be automatically\n    downloaded, cached, and registered for use with the 'showtext' and\n    'ragg' packages.",
+        "License": "MIT + file LICENSE",
+        "URL": "https://rstudio.github.io/thematic/,\nhttps://github.com/rstudio/thematic",
+        "BugReports": "https://github.com/rstudio/thematic/issues",
+        "Depends": "R (>= 3.0.0)",
+        "Imports": "farver, ggplot2 (>= 3.3.0), graphics, grDevices, grid,\nrappdirs, rlang, rstudioapi (>= 0.8), scales, utils",
+        "Suggests": "bslib, Cairo, curl, gganimate, ggiraph, htmltools, jsonlite,\nknitr, lattice, ragg, rmarkdown, shiny (>= 1.5.0), showtext,\nstats, svglite, sysfonts, systemfonts, testthat, vdiffr (>=\n1.0.0), withr",
+        "Config/Needs/check": "shinytest, callr, sf, ggthemes, patchwork,\ngridExtra, tinytex, devtools, rversions",
+        "Config/Needs/routine": "ggrepel",
+        "Config/Needs/website": "GGally, RColorBrewer, patchwork, apreshill/quillt",
+        "Encoding": "UTF-8",
+        "RoxygenNote": "7.3.2",
+        "Collate": "'auto.R' 'base.R' 'cache.R' 'gfonts.R' 'ggplot.R' 'globals.R'\n'hooks.R' 'knitr.R' 'lattice.R' 'onLoad.R' 'thematic-package.R'\n'thematic-save-plot.R' 'thematic.R' 'utils.R'\n'view-shinytest.R'",
+        "NeedsCompilation": "no",
+        "Packaged": "2024-07-25 15:50:58 UTC; cpsievert",
+        "Author": "Carson Sievert [aut, cre] (<https://orcid.org/0000-0002-4958-2844>),\n  Barret Schloerke [aut] (<https://orcid.org/0000-0001-9986-114X>),\n  Joe Cheng [aut],\n  Posit Software, PBC [cph, fnd]",
+        "Maintainer": "Carson Sievert <carson@posit.co>",
+        "Repository": "CRAN",
+        "Date/Publication": "2024-07-29 15:50:02 UTC",
+        "Built": "R 4.4.3; ; 2025-05-31 02:24:09 UTC; windows"
       }
     },
     "tibble": {
@@ -2996,29 +3051,32 @@
     }
   },
   "files": {
+    ".RData": {
+      "checksum": "4ace9f50d308ccc4304089e016dd6b09"
+    },
     "app.R": {
-      "checksum": "636c6fbf30a7cdcd2b4924b6236abb4f"
+      "checksum": "f8e9ed74115ed559c342a46b5ae1e946"
     },
     "global.R": {
-      "checksum": "391cfb7292831014879a1a335d58bcd0"
+      "checksum": "d0d0bd3d5aefcdb1e32388f0d9fd1507"
     },
     "www/bubble_map.R": {
-      "checksum": "42e45abee87fbba8eec813c381041a9a"
+      "checksum": "3eefcbdfda7417945558856785b84160"
     },
     "www/ETL.R": {
-      "checksum": "08def6b2d48ada2e0d9c0d306db29df5"
+      "checksum": "0435c37e350d476039d5722f87c5d377"
     },
     "www/global_energy_capacity.R": {
-      "checksum": "611fca4348bc652b5466f6546d837aca"
+      "checksum": "089256cc5a53cb82d7e4255e97b3be40"
     },
     "www/global_power_plant_database.csv": {
       "checksum": "bd938fe5d753dd29dde230d8690f09ab"
     },
     "www/heatmap.R": {
-      "checksum": "70018864e0be2d75ef87c3ea0cde3945"
+      "checksum": "09e2b6f26056bac4c50fb11710c76c63"
     },
     "www/hist.R": {
-      "checksum": "5037a105ef74d9761ceaad601fed0e80"
+      "checksum": "4e4dc7fe991fd3b91fb72c54592b01ee"
     }
   },
   "users": null
