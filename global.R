@@ -77,7 +77,7 @@ prepare_data_for_bar <- function(df) {
 pad_countries <- function(df_country, country_ref, fuel = NULL) {
   if (is.null(fuel)) {
     d <- country_ref %>%
-      left_join(
+      dplyr::left_join(
         df_country %>%
           group_by(country_long, iso3) %>%
           summarise(capacity_mw = sum(capacity_mw, na.rm = TRUE), .groups = 'drop'),
@@ -85,7 +85,7 @@ pad_countries <- function(df_country, country_ref, fuel = NULL) {
       )
   } else {
     d <- country_ref %>%
-      left_join(
+      dplyr::left_join(
         df_country %>%
           filter(primary_fuel %in% fuel) %>%
           group_by(country_long, iso3) %>%
