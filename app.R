@@ -1,5 +1,3 @@
-# -*- coding: UTF-8 -*-
-
 library(shiny)
 library(plotly)
 library(bslib)
@@ -86,7 +84,7 @@ server <- function(input, output, session){
     
     # Notification seulement si il y a des NA
     if (any(is.na(df$commissioning_year))) {
-      showNotification(enc2utf8("Certaines années sont manquantes et ont été imputées vers l'année 2023."), type = "warning")
+      showNotification("Certaines années sont manquantes et ont été imputées vers l'année 2023.", type = "warning")
     }
     prepare_data_for_bar(df_filtered)
   })
