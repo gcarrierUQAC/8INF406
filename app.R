@@ -11,6 +11,7 @@ Sys.setlocale("LC_ALL", "fr_CA.UTF-8")
 options(encoding = "UTF-8")
 
 ui <- navbarPage(
+  tags$head(tags$meta(charset = "UTF-8")),
   title = "Consommation Énergétique Mondiale",
   input_dark_mode(id = "mode"),
   theme = bs_theme(version = 5, bootswatch = "flatly", base_font = font_google("Roboto")),
