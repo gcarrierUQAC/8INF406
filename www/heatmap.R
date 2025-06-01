@@ -5,7 +5,7 @@ plot_choropleth <- function(df) {
     locations = ~iso3,
     z = ~capacity_mw,
     text = ~country_long,
-    colorscale = "Portland",
+    colorscale = "PuBu",
     marker = list(line = list(color = toRGB("grey"), width = 0.5)),
     colorbar = list(title = 'Capacité MW'),
     locationmode = 'ISO-3',

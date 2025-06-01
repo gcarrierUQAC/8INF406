@@ -6,27 +6,34 @@ couleurs_marker <- c(
 )
 
 animated_bar <- function(data) {
+  data$color_code <- couleurs_marker[data$primary_fuel]
+  
   plot_ly(
     data,
     x = ~capacity_mw,
-    y = ~reorder(country_long, capacity_mw),
+    y = ~factor(primary_fuel, levels = c("Hydro","Solar","Wind","Storage",
+                                         "Geothermal","Wave And Tidal","Biomass","Waste",
+                                         "Nuclear","Coal","Gas","Oil",
+                                         "Petcoke","Cogeneration","Other")),
     color = ~primary_fuel,
     colors = couleurs_marker,
     frame = ~frame,
     type = 'bar',
     orientation = 'h',
-    text = ~paste(enc2utf8("Énergie:"), enc2utf8(primary_fuel), "<br>MW:", round(capacity_mw)),
-    hoverinfo = "text",
-    height = 800
+    text = ~paste("Énergie:", primary_fuel, "<br>MW:", round(capacity_mw)),
+    hoverinfo = "text"
   ) %>%
     layout(
-      title = enc2utf8("Évolution de la capacité installée par pays et type d'énergie"),
-      xaxis = list(title = enc2utf8("Capacité installée (MW)")),
+      title = list(text = "Évolution de la capacité installée par pays et type d'énergie",
+                   font = list(family = "Roboto", size = 18)),
+      xaxis = list(title = "Capacité installée (MW)"),
       yaxis = list(title = "Pays"),
-      barmode = 'group'
-    ) %>%
+      barmode = 'group',
+      paper_bgcolor = "transparent"#,
+      #legendgroup = ~color_code
+      ) %>%
     animation_opts(
-      frame = 400,
+      frame = 200,
       transition = 0,      
       redraw = FALSE,
       mode = "immediate"

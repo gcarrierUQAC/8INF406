@@ -28,7 +28,11 @@ symbol_marker <- c(
   "Wave And Tidal" = "104"
 )
 
-bubble_map <- function(data, x = "longitude", y = "latitude", size = "capacity_mw", color = "primary_fuel", symbol = "primary_fuel") {
+bubble_map <- function(
+    data, x = "longitude", y = "latitude", 
+    size = "capacity_mw", color = "primary_fuel", symbol = "primary_fuel") {
+  data$color_code <- couleurs_marker[data$primary_fuel]
+  
   plot_ly(
     data = data,
     lat = ~get(y),
@@ -40,9 +44,12 @@ bubble_map <- function(data, x = "longitude", y = "latitude", size = "capacity_m
     colors = couleurs_marker,
     symbol = ~get(symbol),
     symbols = symbol_marker,
-    marker = list(opacity = 0.5, line = list(width = 0.5, color = "white")),
-    height = 700,
-    width = 1000,
+    marker = list(
+      opacity = 0.8,
+      sizemode = 'area',
+      sizeref = 7.0 * max(data[[size]], na.rm = TRUE) / (100^2),
+      line = NULL
+    ),
     text = ~paste("Nom:", name, "<br>Capacité:", capacity_mw, "MW<br>Pays:", country, "<br>Type:", primary_fuel)
   ) %>%
     layout(
@@ -50,10 +57,11 @@ bubble_map <- function(data, x = "longitude", y = "latitude", size = "capacity_m
       geo = g,
       showlegend = TRUE,
       legend = list(orientation = "v", xanchor = "r", yanchor = "top"),
-      margin = list(l = 0, r = 0, t = 50, b = 0),
       font = list(family = "Arial, sans-serif", size = 12, color = "#000"),
       hoverlabel = list(bgcolor = "white", bordercolor = "black"),
-      paper_bgcolor = plotly::toRGB("grey90"),
-      plot_bgcolor = plotly::toRGB("lightblue")
+      paper_bgcolor = "transparent",
+      plot_bgcolor = "transparent"#,
+      #legendgroup = ~color_code
     )
 }
+
