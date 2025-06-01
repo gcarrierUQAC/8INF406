@@ -60,7 +60,7 @@ prepare_data_for_bar <- function(df) {
     mutate(commissioning_year = as.integer(commissioning_year)) %>%
     group_by(country_long, primary_fuel, commissioning_year) %>%    
     summarise(capacity_mw = sum(capacity_mw, na.rm = TRUE), .groups = 'drop') %>%
-    complete(country_long, primary_fuel, commissioning_year = full_seq(commissioning_year, 1), fill = list(capacity_mw = 0)) %>%
+    tidyr::complete(country_long, primary_fuel, commissioning_year = full_seq(commissioning_year, 1), fill = list(capacity_mw = 0)) %>%
     arrange(country_long, primary_fuel, commissioning_year) %>%
     group_by(country_long, primary_fuel) %>%
     mutate(capacity_mw = cumsum(capacity_mw)) %>%
@@ -102,7 +102,7 @@ energy_production_per_fuel_type <- df %>%
   mutate(commissioning_year = as.integer(commissioning_year)) %>%
   group_by(commissioning_year, primary_fuel) %>%
   summarise(year_total_capacity = sum(capacity_mw, na.rm = TRUE), .groups = "drop") %>%
-  complete(commissioning_year = unique(.$commissioning_year),
+  tidyr::complete(commissioning_year = unique(.$commissioning_year),
            primary_fuel = unique(.$primary_fuel),
            fill = list(year_total_capacity = 0)) %>%
   group_by(primary_fuel) %>%
