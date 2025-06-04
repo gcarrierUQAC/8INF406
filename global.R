@@ -18,7 +18,7 @@ library(lubridate)
 
 ################################################################################
 # Charger les fonctions et modules
-source("www/heatmap.R", encoding = "UTF-8"))      
+source("www/heatmap.R", encoding = "UTF-8")  
 source("www/hist.R", encoding = "UTF-8")         
 source("www/bubble_map.R", encoding = "UTF-8")
 source("www/global_energy_capacity.R", encoding = "UTF-8")
