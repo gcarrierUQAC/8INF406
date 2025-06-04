@@ -1,3 +1,6 @@
+Sys.setlocale("LC_ALL", "fr_CA.UTF-8")
+options(encoding = "UTF-8")
+
 g <- list(
   scope      = "world",
   projection = list(type = "mercator"),
