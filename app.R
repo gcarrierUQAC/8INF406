@@ -2,11 +2,15 @@ library(shiny)
 library(plotly)
 library(bslib)
 library(thematic)
-source("global.R")
+
+exprs_global <- parse(file = "global.R", encoding = "UTF-8")
+eval(exprs_global, envir = globalenv())
 
 thematic_shiny(font = "auto")
 Sys.setlocale("LC_CTYPE", "fr_CA.UTF-8")
 options(encoding = "UTF-8")
+
+
 
 ui <- navbarPage(
   tags$head(tags$meta(charset = "UTF-8")),
