@@ -61,8 +61,8 @@ mod_boxplot_server <- function(id, data) {
       ) %>%
         layout(
           title = title,
-          xaxis = list(title = "Type d'énergie"),
-          yaxis = list(title = "Capacité (MW)")
+          xaxis = list(title = enc2utf8("Type d'énergie")),
+          yaxis = list(title = enc2utf8("Capacité (MW)"))
         )
     })
   })
