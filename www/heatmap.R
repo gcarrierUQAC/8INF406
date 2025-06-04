@@ -7,16 +7,17 @@ plot_choropleth <- function(df) {
     text = ~country_long,
     colorscale = "PuBu",
     marker = list(line = list(color = toRGB("grey"), width = 0.5)),
-    colorbar = list(title = 'Capacité MW'),
+    colorbar = list(title = enc2utf8('Capacité MW')),
     locationmode = 'ISO-3',
     hoverinfo = "text",
-    hovertemplate = paste(
+    hovertemplate = enc2utf8(paste(
       "<b>%{text}</b><br>",
       "Capacité installée: %{z} MW<br>"
     )
+  )
   ) %>%
     layout(
-      title = 'Capacité installée (MW) par pays',
+      title = enc2utf8('Capacité installée (MW) par pays'),
       geo = list(
         showframe = FALSE,
         showcoastlines = FALSE,
