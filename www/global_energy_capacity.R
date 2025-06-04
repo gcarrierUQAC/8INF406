@@ -14,9 +14,9 @@ global_energy_production_animated_bar <- function(data) {
     colors = couleurs_marker
   ) %>%
     layout(
-      title = "Évolution de la capacité installée (MW) par type d'énergie",
-      xaxis = list(title = "Type d'énergie"),
-      yaxis = list(title = "Capacité installée (MW)"),
+      title = enc2utf8("Évolution de la capacité installée (MW) par type d'énergie"),
+      xaxis = list(title = enc2utf8("Type d'énergie")),
+      yaxis = list(title = enc2utf8("Capacité installée (MW)")),
       legend = list(
         tracegroupgap = 10,
         groupclick = "toggleitem"
@@ -30,6 +30,6 @@ global_energy_production_animated_bar <- function(data) {
       mode       = "immediate"
     ) %>%
     animation_slider(
-      currentvalue = list(prefix = "Année ")
+      currentvalue = list(prefix = enc2utf8("Année "))
     )
 }
