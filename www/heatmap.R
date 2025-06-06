@@ -1,26 +1,27 @@
 plot_choropleth <- function(df) {
   plot_ly(
     data = df,
-    type = 'choropleth',
+    type = "choropleth",
     locations = ~iso3,
     z = ~capacity_mw,
     text = ~country_long,
     colorscale = "PuBu",
     marker = list(line = list(color = toRGB("grey"), width = 0.5)),
-    colorbar = list(title = 'Capacité MW'),
-    locationmode = 'ISO-3',
+    colorbar = list(title = enc2utf8("Capacité MW")),
+    locationmode = "ISO-3",
     hoverinfo = "text",
-    hovertemplate = paste(
+    hovertemplate = enc2utf8(paste(
       "<b>%{text}</b><br>",
       "Capacité installée: %{z} MW<br>"
     )
+  )
   ) %>%
     layout(
-      title = 'Capacité installée (MW) par pays',
+      title = enc2utf8("Capacité installée (MW) par pays"),
       geo = list(
         showframe = FALSE,
         showcoastlines = FALSE,
-        projection = list(type = 'equirectangular')
+        projection = list(type = "equirectangular")
       )
     )
 }
