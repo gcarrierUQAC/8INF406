@@ -112,3 +112,40 @@ energy_production_per_fuel_type <- df %>%
 # Listes pour les selectInput de l’UI
 liste_pays <- sort(unique(df$country_long))
 liste_fuel <- sort(unique(df$primary_fuel))
+
+################################################################################
+# Dataframes et listes pour accueil
+top_10_countries <- df_country %>%
+  group_by(country_long) %>%
+  summarise(total_capacity_mw = sum(capacity_mw, na.rm = TRUE)) %>%
+  slice_max(order_by = total_capacity_mw, n = 10) %>%
+  arrange(desc(total_capacity_mw))
+
+top_countries_per_fuel_type <- df_country %>%
+  group_by(primary_fuel, country_long) %>%
+  summarise(total_capacity_mw = sum(capacity_mw, na.rm = TRUE)) %>%
+  group_by(primary_fuel) %>%
+  slice_max(order_by = total_capacity_mw, n = 3, with_ties = FALSE) %>%
+  mutate(primary_fuel = factor(primary_fuel, levels = c("Hydro","Solar","Wind","Storage",
+                                                        "Geothermal","Wave And Tidal","Biomass","Waste",
+                                                        "Nuclear","Coal","Gas","Oil",
+                                                        "Petcoke","Cogeneration","Other"))) %>%
+  arrange(primary_fuel)
+
+fuel_icons <- list(
+  "Coal" = icon("fire", style = paste0("color:", couleurs_marker["Coal"])),
+  "Hydro" = icon("water", style = paste0("color:", couleurs_marker["Hydro"])),
+  "Gas" = icon("gas-pump", style = paste0("color:", couleurs_marker["Gas"])),
+  "Oil" = icon("oil-well", style = paste0("color:", couleurs_marker["Oil"])),
+  "Solar" = icon("solar-panel", style = paste0("color:", couleurs_marker["Solar"])),
+  "Wind" = icon("wind", style = paste0("color:", couleurs_marker["Wind"])),
+  "Nuclear" = icon("circle-radiation", style = paste0("color:", couleurs_marker["Nuclear"])),
+  "Biomass" = icon("leaf", style = paste0("color:", couleurs_marker["Biomass"])),
+  "Geothermal" = icon("volcano", style = paste0("color:", couleurs_marker["Geothermal"])),
+  "Waste" = icon("dumpster", style = paste0("color:", couleurs_marker["Waste"])),
+  "Wave And Tidal" = icon("bridge-water", style = paste0("color:", couleurs_marker["Wave And Tidal"])),
+  "Storage" = icon("warehouse", style = paste0("color:", couleurs_marker["Storage"])),
+  "Petcoke" = icon("hill-rockslide", style = paste0("color:", couleurs_marker["Petcoke"])),
+  "Cogeneration" = icon("bolt-lightning", style = paste0("color:", couleurs_marker["Cogeneration"])),
+  "Other" = icon("bolt-lightning", style = paste0("color:", couleurs_marker["Other"]))
+)

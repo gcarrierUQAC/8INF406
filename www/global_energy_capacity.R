@@ -22,9 +22,9 @@ global_energy_production_animated_bar <- function(data) {
     colors = couleurs_marker
   ) %>%
     layout(
-      title = "Évolution de la capacité installée (MW) par type d'énergie",
+      title = "Évolution de la capacité installée totale (MW) par type d'énergie",
       xaxis = list(title = "Type d'énergie"),
-      yaxis = list(title = "Capacité installée (MW)"),
+      yaxis = list(title = "Capacité installée totale (MW)"),
       legend = list(
         tracegroupgap = 10,
         groupclick = "toggleitem"
