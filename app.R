@@ -19,71 +19,95 @@ ui <- page_navbar(
             fluidRow(
               column(3, card(
                 status = "info",
-                card_header("Pays ayant la plus grande capacité installée totale"),
+                card_header("Pays à la plus grande capacité installée"),
                 card_body(
-                  lapply(1:nrow(top_10_countries), function(i) {
-                    country <- top_10_countries$country_long[i]
-                    capacity <- top_10_countries$total_capacity_mw[i]
-                    
-                    trophy_icon <- switch(i,
-                                          "1" = icon("trophy", style = "color:gold"),
-                                          "2" = icon("trophy", style = "color:silver"),
-                                          "3" = icon("trophy", style = "color:#cd7f32"),
-                                          NULL
+                  tags$table(
+                    style = "width:100%; text-align:left;",
+                    tags$thead(
+                      tags$tr(
+                        tags$th("Rang"),
+                        tags$th("Pays"),
+                        tags$th("Capacité (MW)"),
+                        tags$th("Récompense")
+                      )
+                    ),
+                    tags$tbody(
+                      lapply(1:nrow(top_10_countries), function(i) {
+                        country <- top_10_countries$country_long[i]
+                        capacity <- top_10_countries$total_capacity_mw[i]
+                        trophy_icon <- switch(i,
+                                              "1" = icon("trophy", style = "color:gold"),
+                                              "2" = icon("trophy", style = "color:silver"),
+                                              "3" = icon("trophy", style = "color:#cd7f32"),
+                                              NULL
+                        )
+                        tags$tr(
+                          tags$td(i),
+                          tags$td(country),
+                          tags$td(format(capacity, big.mark = ",")),
+                          tags$td(if (!is.null(trophy_icon)) trophy_icon)
+                        )
+                      })
                     )
-
-                    tags$p(
-                      tags$b(paste(i, "-", country)), ": ", format(capacity, big.mark = ","), " MW",
-                      if (!is.null(trophy_icon))
-                        trophy_icon
-                    )
-                  })
-                )),
+                  )
+                ),
                 tags$img(
                   width = "100%",
                   src = "energyLogo.png"
                 )
-              ),
-              column(9, card(
-                status = "info",
-                card_header("Top 3 des pays ayant la plus grande capacité installée totale par type d'énergie"),
-                card_body(
-                  lapply(levels(top_countries_per_fuel_type$primary_fuel), function(fuel) {
-                  
-                    top_per_fuel <- top_countries_per_fuel_type %>% filter(primary_fuel == fuel)
-                    
-                    icon <- fuel_icons[fuel]
-                    
-                    tags$div(
-                      tags$div(
-                        if (!is.null(icon))
-                        {
-                          icon
-                        },
-                        tags$b(paste("-", fuel)),
-                      ),
-                      tags$ol(
-                        lapply(1:nrow(top_per_fuel), function (i) {
-                          
-                          trophy_icon <- switch(i,
-                                                "1" = icon("trophy", style = "color:gold"),
-                                                "2" = icon("trophy", style = "color:silver"),
-                                                "3" = icon("trophy", style = "color:#cd7f32"),
-                                                NULL
-                          )
-                          
-                          country <- top_per_fuel$country_long[i]
-                          capacity <- top_per_fuel$total_capacity_mw[i]
-                          
-                          tags$li(trophy_icon, paste0(country, ": ", format(capacity, big.mark = ","), " MW"))
-                        }),
-                        style = "list-style-type: none"
-                      )
-                    )
-                 })
+              )),
+              column(9,
+                     card(
+                       status = "info",
+                       card_header("Top 3 mondiaux par type d’énergie : pays à la plus grande capacité installée"),
+                       card_body(
+                         lapply(levels(top_countries_per_fuel_type$primary_fuel), function(fuel) {
+                           top_per_fuel <- top_countries_per_fuel_type %>% filter(primary_fuel == fuel)
+                           icon <- fuel_icons[fuel]
+                           card(
+                             status = "primary",
+                             card_header(
+                               if (!is.null(icon)) icon,
+                               paste(" ", fuel)
+                             ),
+                             card_body(
+                               tags$table(
+                                 style = "width:100%; text-align:left;",
+                                 tags$thead(
+                                   tags$tr(
+                                     tags$th("Rang"),
+                                     tags$th("Pays"),
+                                     tags$th("Capacité (MW)"),
+                                     tags$th("Récompense")
+                                   )
+                                 ),
+                                 tags$tbody(
+                                   lapply(1:nrow(top_per_fuel), function(i) {
+                                     trophy_icon <- switch(i,
+                                                           "1" = icon("trophy", style = "color:gold"),
+                                                           "2" = icon("trophy", style = "color:silver"),
+                                                           "3" = icon("trophy", style = "color:#cd7f32"),
+                                                           NULL
+                                     )
+                                     country <- top_per_fuel$country_long[i]
+                                     capacity <- top_per_fuel$total_capacity_mw[i]
+                                     tags$tr(
+                                       tags$td(i),
+                                       tags$td(country),
+                                       tags$td(format(capacity, big.mark = ",")),
+                                       tags$td(if (!is.null(trophy_icon)) trophy_icon)
+                                     )
+                                   })
+                                 )
+                               )
+                             )
+                           )
+                         })
+                       )
+                     )
               )
-            ))
-          )
+            )
+            
   ),
   nav_panel("Carte mondiale",
            fluidRow(
